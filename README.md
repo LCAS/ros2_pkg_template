@@ -6,24 +6,27 @@ This repository serves as a template for creating ROS2 packages, equipped with a
 
 To begin development in a containerized environment:
 
-1. **Fork and Clone Repository:**
-   Fork this repository into your workspace and clone the forked repository into your environment. Use the following command:
+1. **Use this repo as a template:**
+   The best way to work with this repo is to use it as a template for your ROS package development, to do so, in the top right corner select `Use this template`:
+   
+   ![2024-04-24](https://github.com/LCAS/ros2_pkg_template/assets/47870260/2aba3511-7a3f-4e88-a3c1-26ba2be48b45)
 
-   ```bash
-   git clone https://github.com/<YOUR_WORKSPACE>/ros2_pkg_template.git
-   ```
+   Then in the next step specify the owner and the package name as shown below:
+   
+   ![template](https://github.com/LCAS/ros2_pkg_template/assets/47870260/b564c9d7-81d4-4dc1-baba-9355b59d09c1)
+   
 
-2. **Open in Visual Studio Code:**
+3. **Open in Visual Studio Code:**
    Open the cloned repository in VSCode. VSCode will prompt you to "Reopen in Container." Alternatively, you can use the command palette (`Ctrl+Shift+P`) and search for the "reopen in container" command.
 
    ![Reopen in Container](https://github.com/LCAS/ros2_pkg_template/assets/47870260/52b26ae9-ffe9-4e7c-afb9-88cee88f870f)
 
-3. **Container Setup:**
+4. **Container Setup:**
    Once reopened in the container, VSCode will initiate the building process and pull all necessary dependencies. You can monitor the building log within VSCode.
 
    ![Devcontainer Log](https://github.com/LCAS/ros2_pkg_template/assets/47870260/4a01e140-972e-4f10-b866-acaabf6b4cfd)
 
-4. **Verify Container Environment:**
+5. **Verify Container Environment:**
    After the build completes, VSCode will connect to the container. You can verify that you are within the container environment.
 
    ![In Container](https://github.com/LCAS/ros2_pkg_template/assets/47870260/9efec878-5d83-4aed-a9d0-8a1cf6bbf655)
