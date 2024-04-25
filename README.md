@@ -63,6 +63,9 @@ The devcontainer includes a light desktop interface. To utilize this feature:
 ### Enjoy Development!
 
 By leveraging this setup, you can develop on a remote machine with a lightweight desktop interface. Magic! 
+All ROS2 packages should go into the `src/` folder. Create them with `ros2 pkg create...`. 
+
+The devcontainer tries to install all dependencies of the workspace automatically as much as possible, and also tries to build the workspace when it is created, to speed up later colcon builds.
 
 ### References
 
