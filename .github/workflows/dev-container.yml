@@ -1,0 +1,25 @@
+name: 'devcontainer CI' 
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout from github
+        uses: actions/checkout@v3
+      - name: extract the github reference
+        run: echo "BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
+      - name: Build and run dev container task
+        uses: devcontainers/ci@v0.3
+        with:
+          imageName: lcas.lincoln.ac.uk/devcontainer/${{ github.repository}}
+          push: never
+          imageTag: ${{ env.BRANCH }}
+          #runCmd: "bash .devcontainer/run-ci.sh"

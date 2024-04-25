@@ -10,7 +10,7 @@ RUN apt-get update \
 
 # get the source tree and analyse it for its package.xml only
 FROM base as sourcefilter
-COPY . /tmp/src
+COPY ./src /tmp/src
 # remove everything that isn't package.xml
 RUN find /tmp/src -type f \! -name "package.xml" -print | xargs rm -rf
 
