@@ -1,4 +1,8 @@
-FROM lcas.lincoln.ac.uk/lcas/ros:humble as base
+ARG BASE_IMAGE=ros:humble
+
+FROM ${BASE_IMAGE} as base
+
+USER root
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -22,12 +26,15 @@ RUN rosdep update && apt-get update
 RUN cd /tmp/src && rosdep install --from-paths . --ignore-src -r -y && cd && rm -rf /tmp/src
 
 FROM depbuilder as final
-# add user ros with sudo rights
-RUN useradd -ms /bin/bash ros && echo "ros:ros" | chpasswd && adduser ros sudo
+# add user ros with sudo rights if it doesn't exist
+RUN if ! id ros; then \
+        useradd -ms /bin/bash ros && echo "ros:ros" | chpasswd && adduser ros sudo; \
+        echo "ALL ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers; \
+        echo "source /opt/ros/humble/setup.bash" >> /etc/bash.bashrc; \
+    else echo "user ros already exists"; \
+    fi
 
 # add sudo without password
-RUN echo "ALL ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-
-RUN echo "source /opt/ros/humble/setup.bash" >> /etc/bash.bashrc
+ENV DEBIAN_FRONTEND=noninteractive
 
 USER ros

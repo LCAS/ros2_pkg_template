@@ -1,9 +1,14 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
 {
-	"name": "L-CAS Humble Devcontainer",
-	"dockerFile": "./Dockerfile",
-	"context": "..",
+	"name": "L-CAS Humble Default Devcontainer",
+	"build": {
+		"dockerfile": "../Dockerfile",
+		"args": {
+			"BASE_IMAGE": "lcas.lincoln.ac.uk/lcas/ros:humble"
+		},
+		"context": "../.."
+	},
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
@@ -14,9 +19,9 @@
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	"forwardPorts": [6080],
 	"portsAttributes": {
-	  "6080": {
+	  	"6080": {
 			"label": "desktop"
-	  }
+	  	}
 	},
 
 	// Use 'postCreateCommand' to run commands after the container is created.
@@ -38,5 +43,10 @@
 				"github.vscode-github-actions"
 			]
 		}
+	},
+	"hostRequirements": {
+		"gpu": "optional",
+		"cpus": 2,
+		"memory": "8gb"
 	}
 }
