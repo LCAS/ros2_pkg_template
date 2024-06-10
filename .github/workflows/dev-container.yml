@@ -11,6 +11,11 @@ on:
 jobs:
   build_devcontainer:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        config: 
+          - default
+          - cuda-opengl
     steps:
       - name: Checkout from github
         uses: actions/checkout@v3
@@ -23,6 +28,7 @@ jobs:
         uses: devcontainers/ci@v0.3
         with:
           imageName: lcas.lincoln.ac.uk/devcontainer/${{ steps.docker_image_name.outputs.docker_image }}
+          configFile: ./.devcontainer/${{ matrix.config }}/devcontainer.json
           push: never
-          imageTag: ${{ env.BRANCH }}
+          imageTag: ${{ matrix.config }}-${{ env.BRANCH }}
           #runCmd: "bash .devcontainer/run-ci.sh"
