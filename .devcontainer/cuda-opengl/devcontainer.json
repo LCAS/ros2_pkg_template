@@ -5,7 +5,7 @@
 	"build": {
 		"dockerfile": "../Dockerfile",
 		"args": {
-			"BASE_IMAGE": "lcas.lincoln.ac.uk/lcas/ros:jammy-humble-cuda-opengl"
+			"BASE_IMAGE": "lcas.lincoln.ac.uk/lcas/ros:jammy-humble-cuda12.2-opengl"
 		},
 		"context": "../.."
 	},

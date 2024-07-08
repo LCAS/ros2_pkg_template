@@ -42,16 +42,19 @@ The devcontainer includes a light desktop interface. To utilize this feature:
    "features": {
        "ghcr.io/LCAS/devcontainer-features/desktop-lite:1": {}
    },
-   "forwardPorts": [6080],
+   "forwardPorts": [6080, 5801],
    "portsAttributes": {
        "6080": {
            "label": "desktop"
+       },
+       "5801": {
+           "label": "desktop opengl"
        }
    }
    ```
 
 2. **Accessing the Desktop Interface:**
-   Open the user interface by navigating to the PORTS tab in VSCode, selecting port `6080`, and opening it in the browser.
+   Open the user interface by navigating to the PORTS tab in VSCode, selecting port `6080` (or port `5801` for the CUDA-OpenGL version), and opening it in the browser.
 
    ![Open in Browser](https://github.com/LCAS/ros2_pkg_template/assets/47870260/b61f4c95-453b-4c92-ad66-5133c91abb05)
 
