@@ -21,12 +21,17 @@ To begin development in a containerized environment:
 
    ![Reopen in Container](https://github.com/LCAS/ros2_pkg_template/assets/47870260/52b26ae9-ffe9-4e7c-afb9-88cee88f870f)
 
-4. **Container Setup:**
+   Then this will promote you with the following two options:
+   ![image](https://github.com/user-attachments/assets/d0885c75-59de-4b5d-a8b7-c38bf02444d4)
+
+   You may select the base image according to your targeted application. For instance, if the nodes do not require GPU processing tasks, it is preferable to use the default devcontainer as it is more lightweight.
+
+5. **Container Setup:**
    Once reopened in the container, VSCode will initiate the building process and pull all necessary dependencies. You can monitor the building log within VSCode.
 
    ![Devcontainer Log](https://github.com/LCAS/ros2_pkg_template/assets/47870260/4a01e140-972e-4f10-b866-acaabf6b4cfd)
 
-5. **Verify Container Environment:**
+6. **Verify Container Environment:**
    After the build completes, VSCode will connect to the container. You can verify that you are within the container environment.
 
    ![In Container](https://github.com/LCAS/ros2_pkg_template/assets/47870260/9efec878-5d83-4aed-a9d0-8a1cf6bbf655)
