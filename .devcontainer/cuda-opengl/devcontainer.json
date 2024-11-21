@@ -19,8 +19,9 @@
 	},
 
 	// Use 'postCreateCommand' to run commands after the container is created.
+	// Use 'postStartCommand' instead of 'postCreateCommand' to start a fresh virtual desktop
 	// Here we run `colcon build` to build the workspace initially, (to speed up later builds), and we keep going if it fails for some packages to get as much compiled as possible
-	"postCreateCommand": "/opt/entrypoint.sh /bin/true; .devcontainer/post-create.sh",
+	"postStartCommand": "/opt/entrypoint.sh /bin/true; .devcontainer/post-create.sh",
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	"remoteUser": "ros",
