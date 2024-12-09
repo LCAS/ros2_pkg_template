@@ -3,11 +3,11 @@
 {
 	"name": "L-CAS Humble CUDA-OpenGL Devcontainer",
 	"build": {
-		"dockerfile": "../Dockerfile",
+		"dockerfile": "./Dockerfile",
 		"args": {
-			"BASE_IMAGE": "lcas.lincoln.ac.uk/lcas/ros:jammy-humble-cuda12.2-opengl"
+			"BASE_IMAGE": "lcas.lincoln.ac.uk/devcontainer/ros2-teaching:2425-devel"
 		},
-		"context": "../.."
+		"context": ".."
 	},
 
 	"forwardPorts": [5801],

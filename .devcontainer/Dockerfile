@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=ros:humble
+ARG BASE_IMAGE=lcas.lincoln.ac.uk/devcontainer/ros2-teaching:2425-devel
 
 FROM ${BASE_IMAGE} as base
 
