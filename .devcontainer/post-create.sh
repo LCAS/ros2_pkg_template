@@ -14,4 +14,6 @@ LOCAL_SETUP_FILE=`pwd`/install/setup.bash
 add_config_if_not_exist "if [ -r $LOCAL_SETUP_FILE ]; then source $LOCAL_SETUP_FILE; fi"
 
 source /opt/ros/humble/setup.bash
+source /opt/ros/lcas/install/setup.bash
+
 colcon build --symlink-install --continue-on-error
