@@ -5,7 +5,9 @@
 	"build": {
 		"dockerfile": "./Dockerfile",
 		"args": {
-			"BASE_IMAGE": "lcas.lincoln.ac.uk/devcontainer/ros2-teaching:2425-devel"
+			// use the arm64 image, if you are on an arm64 machine like an Apple Mx
+			//"BASE_IMAGE": "lcas.lincoln.ac.uk/devcontainer/ros2-teaching-arm64:4"
+			"BASE_IMAGE": "lcas.lincoln.ac.uk/devcontainer/ros2-teaching:4"
 		},
 		"context": ".."
 	},
