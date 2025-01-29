@@ -16,13 +16,8 @@ function add_git_config_if_not_exist {
 }
 
 add_config_if_not_exist "source /opt/ros/humble/setup.bash"
-add_config_if_not_exist "source /opt/ros/lcas/install/setup.bash"
-add_config_if_not_exist "alias rviz_sensors='rviz2 -d /opt/ros/lcas/install/limo_description/share/limo_description/rviz/model_sensors_real.rviz'"
-add_config_if_not_exist "alias tidybot_sim='ros2 launch uol_tidybot tidybot.launch.py'"
-
 
 source /opt/ros/humble/setup.bash
-source /opt/ros/lcas/install/setup.bash
 
 colcon build --symlink-install --continue-on-error || true
 
@@ -39,4 +34,5 @@ add_git_config_if_not_exist "init.defaultBranch" "main"
 
 
 sleep 10
+# hack to set L-CAS background
 DISPLAY=:1 xfconf-query -c xfce4-desktop -p $(xfconf-query -c xfce4-desktop -l | grep "workspace0/last-image") -s /usr/share/backgrounds/xfce/lcas.jpg  || true

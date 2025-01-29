@@ -1,14 +1,11 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
 {
-	"name": "L-CAS Humble CUDA-OpenGL Teaching Devcontainer",
+	"name": "L-CAS Humble CUDA-OpenGL Devcontainer",
 	"build": {
 		"dockerfile": "./Dockerfile",
 		"args": {
-			// use the arm64 image, if you are on an arm64 machine like an Apple Mx
-			//"BASE_IMAGE": "lcas.lincoln.ac.uk/devcontainer/ros2-teaching-arm64:4"
-			// use the amd64 image (default), if you are on an arm64 machine like an Apple Mx
-			"BASE_IMAGE": "lcas.lincoln.ac.uk/devcontainer/ros2-teaching-amd64:4"
+			"BASE_IMAGE": "lcas.lincoln.ac.uk/lcas/ros-docker-images:jammy-cuda12.2-humble-2"
 		},
 		"context": ".."
 	},

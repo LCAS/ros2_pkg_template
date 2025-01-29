@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=lcas.lincoln.ac.uk/devcontainer/ros2-teaching:4
+ARG BASE_IMAGE=lcas.lincoln.ac.uk/lcas/ros-docker-images:jammy-cuda12.2-humble-2
 
 FROM ${BASE_IMAGE} as base
 
@@ -6,8 +6,11 @@ USER root
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt-get update && \
-    apt-get upgrade -y 
+RUN apt-get update \
+    && apt-get install -qq -y --no-install-recommends \
+    git \
+    python3-pip \
+    python3-rosdep
 
 # get the source tree and analyse it for its package.xml only
 FROM base as sourcefilter
