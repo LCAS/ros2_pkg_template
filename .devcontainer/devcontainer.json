@@ -3,11 +3,11 @@
 {
 	"name": "L-CAS Humble CUDA-OpenGL Devcontainer",
 	"build": {
-		"dockerfile": "../Dockerfile",
+		"dockerfile": "./Dockerfile",
 		"args": {
-			"BASE_IMAGE": "lcas.lincoln.ac.uk/lcas/ros:jammy-humble-cuda12.2-opengl"
+			"BASE_IMAGE": "lcas.lincoln.ac.uk/lcas/ros-docker-images:jammy-cuda12.2-humble-2"
 		},
-		"context": "../.."
+		"context": ".."
 	},
 
 	"forwardPorts": [5801],
@@ -18,12 +18,8 @@
 		}
 	},
 
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// Use 'postStartCommand' instead of 'postCreateCommand' to start a fresh virtual desktop
-	// Here we run `colcon build` to build the workspace initially, (to speed up later builds), and we keep going if it fails for some packages to get as much compiled as possible
 	"postStartCommand": "/opt/entrypoint.sh /bin/true; .devcontainer/post-create.sh",
 
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	"remoteUser": "ros",
 	"updateRemoteUserUID": true, // ensure internal user has the same UID as the host user and update file permissions
 	"customizations": {

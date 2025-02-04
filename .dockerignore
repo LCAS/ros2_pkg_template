@@ -7,3 +7,10 @@ bin/
 lib/
 install/
 *~
+
+.git
+.gitignore
+.dockerignore
+.gitmodules
+
+.keep

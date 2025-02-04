@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=ros:humble
+ARG BASE_IMAGE=lcas.lincoln.ac.uk/lcas/ros-docker-images:jammy-cuda12.2-humble-2
 
 FROM ${BASE_IMAGE} as base
 
@@ -22,17 +22,11 @@ RUN find /tmp/src -type f \! -name "package.xml" -print | xargs rm -rf
 FROM base as depbuilder
 # copy the reduced source tree (only package.xml) from previous stage
 COPY --from=sourcefilter /tmp/src /tmp/src
-RUN rosdep update && apt-get update
+RUN rosdep update --rosdistro ${ROS_DISTRO} && apt-get update
 RUN cd /tmp/src && rosdep install --from-paths . --ignore-src -r -y && cd && rm -rf /tmp/src
 
 FROM depbuilder as final
 # add user ros with sudo rights if it doesn't exist
-RUN if ! id ros; then \
-        useradd -ms /bin/bash ros && echo "ros:ros" | chpasswd && adduser ros sudo; \
-        echo "ALL ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers; \
-        echo "source /opt/ros/humble/setup.bash" >> /etc/bash.bashrc; \
-    else echo "user ros already exists"; \
-    fi
 
 # add sudo without password
 ENV DEBIAN_FRONTEND=noninteractive
