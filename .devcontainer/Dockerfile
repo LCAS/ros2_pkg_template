@@ -27,6 +27,12 @@ RUN cd /tmp/src && rosdep install --from-paths . --ignore-src -r -y && cd && rm 
 
 FROM depbuilder as final
 # add user ros with sudo rights if it doesn't exist
+ARG GIT_REPO_VERSION="unknown"
+ARG GIT_REPO_VERSION_DATE="unknown"
+
+# export docker iamge build informaton to environment
+ENV GIT_REPO_VERSION=${GIT_REPO_VERSION}
+ENV GIT_REPO_VERSION_DATE=${GIT_REPO_VERSION_DATE}
 
 # add sudo without password
 ENV DEBIAN_FRONTEND=noninteractive

@@ -1,0 +1,82 @@
+name: Docker Image CI
+
+on:
+    push:
+        branches: ["main"]
+        # ensure that version tags also trigger a build, naming convention is `vX.Y.Z` 
+        # make sure the naming convention is followed in tags.
+        tags:
+            - "v*"
+    pull_request:
+        branches: ["main"]
+    # permit manual trigger as well
+    workflow_dispatch:
+
+jobs:
+    build:
+        # this only works on LCAS organisation and should be skipped otherwise
+        if: github.repository_owner == 'LCAS'
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Git Checkout
+              uses: actions/checkout@v5
+              with:
+                  fetch-depth: 1
+
+            # log in to docker registry with correct permission
+            # only works within LCAS organisation and NOT on forks
+            - name: Docker Login LCAS
+              uses: docker/login-action@v2
+              with:
+                  registry: lcas.lincoln.ac.uk
+                  username: ${{ secrets.LCAS_REGISTRY_PUSHER }}
+                  password: ${{ secrets.LCAS_REGISTRY_TOKEN }}
+
+            # create a docker image name from the github repository name, ensuring lower case and no disallowed characters
+            - name: create docker image name from github name
+              id: docker-image-name
+              run: |
+                    repo_name=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]' | tr '. ' '-')
+                    echo "image_name=$repo_name" >> $GITHUB_OUTPUT
+
+            # set the relevant docker tags and labels
+            - name: Docker meta
+              id: meta
+              uses: docker/metadata-action@v5
+              with:
+                  # list of Docker images to use as base name for tags
+                  labels: |
+                      uk.ac.lincoln.lcas.repository=${{ github.repository }}
+                      uk.ac.lincoln.lcas.commit_sha=${{ github.sha }}
+                      uk.ac.lincoln.lcas.build_date=${{ github.event.head_commit.timestamp }}
+                      uk.ac.lincoln.lcas.version=${{ github.ref_name }}
+                      uk.ac.lincoln.lcas.builder=${{ github.actor }}
+                  images: |
+                      lcas.lincoln.ac.uk/${{ steps.docker-image-name.outputs.image_name }}
+                  flavor: |
+                      latest=auto
+                  tags: |
+                      type=semver,pattern={{version}}
+                      type=semver,pattern={{major}}.{{minor}}
+                      type=semver,pattern={{major}}
+                      type=ref,event=branch
+
+            - name: setup buildx
+              uses: docker/setup-buildx-action@v2
+
+            - name: Build and Push
+              uses: docker/build-push-action@v6
+              with:
+                  context: .
+                  file: ./.devcontainer/Dockerfile
+                  platforms: linux/amd64
+                  cache-from: type=gha
+                  cache-to: type=gha,mode=max
+                  push: ${{ github.event_name != 'pull_request' }}
+                  tags: ${{ steps.meta.outputs.tags }}
+                  labels: ${{ steps.meta.outputs.labels }}
+                  build-args: |
+                      BASE_IMAGE=lcas.lincoln.ac.uk/lcas/ros-docker-images:jammy-cuda12.2-humble-2
+                      GIT_REPO_VERSION=${{ github.ref_name }}
+                      GIT_REPO_VERSION_DATE=${{ github.event.head_commit.timestamp }}
