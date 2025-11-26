@@ -50,7 +50,7 @@ USER ros
 RUN mkdir -p ${HOME}/workspace/src
 COPY . ${HOME}/workspace/src/repository
 WORKDIR ${HOME}/workspace/
-RUN rosdep update --rosdistro ${ROS_DISTRO} && apt-get update \ 
+RUN rosdep update --rosdistro ${ROS_DISTRO} && sudo apt-get update \ 
     && rosdep install --from-paths ./src --ignore-src -r -y \
     && bash -c "source /opt/ros/${ROS_DISTRO}/setup.sh; colcon build"
 
