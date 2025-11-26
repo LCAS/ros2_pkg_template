@@ -40,5 +40,5 @@ jobs:
           imageName: devcontainer/${{ steps.docker_image_name.outputs.docker_image }}
           configFile: ./.devcontainer/devcontainer.json
           push: never
-          #imageTag: ${{ matrix.config }}-${{ env.BRANCH }}
-          #runCmd: "bash .devcontainer/run-ci.sh"
+          cacheFrom: type=gha
+          cacheTo: type=gha,mode=max
