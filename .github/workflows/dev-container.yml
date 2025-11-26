@@ -34,6 +34,8 @@ jobs:
       - name: "image name from repo name"
         id: docker_image_name
         run: echo "docker_image=${{ github.repository }}" | tr '[:upper:]' '[:lower:]' |sed 's/[^0-9,a-z,A-Z,=,_,\/]/-/g' >>${GITHUB_OUTPUT}
+      - name: setup buildx
+        uses: docker/setup-buildx-action@v2
       - name: Build and run dev container task
         uses: devcontainers/ci@v0.3
         with:
