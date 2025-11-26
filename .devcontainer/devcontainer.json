@@ -5,9 +5,12 @@
 	"build": {
 		"dockerfile": "./Dockerfile",
 		"args": {
-			"BASE_IMAGE": "lcas.lincoln.ac.uk/lcas/ros-docker-images:jammy-cuda12.2-humble-2"
+			"BASE_IMAGE": "lcas.lincoln.ac.uk/lcas/ros-docker-images:jammy-cuda12.2-humble-2",
+			"GIT_REPO_VERSION": "devcontainer",
+			"GIT_REPO_VERSION_DATE": "devcontainer"
 		},
-		"context": ".."
+		"context": "..",
+		"target": "devcontainer"
 	},
 
 	"forwardPorts": [5801],

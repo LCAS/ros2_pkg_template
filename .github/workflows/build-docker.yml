@@ -71,12 +71,13 @@ jobs:
               with:
                   context: .
                   file: ./.devcontainer/Dockerfile
-                  platforms: linux/amd64
+                  platforms: linux/amd64 # add other platforms if needed
                   cache-from: type=gha
                   cache-to: type=gha,mode=max
                   push: ${{ github.event_name != 'pull_request' }}
                   tags: ${{ steps.meta.outputs.tags }}
                   labels: ${{ steps.meta.outputs.labels }}
+                  target: final
                   build-args: |
                       BASE_IMAGE=lcas.lincoln.ac.uk/lcas/ros-docker-images:jammy-cuda12.2-humble-2
                       GIT_REPO_VERSION=${{ github.ref_name }}

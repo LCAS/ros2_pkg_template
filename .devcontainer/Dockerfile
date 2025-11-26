@@ -25,6 +25,17 @@ COPY --from=sourcefilter /tmp/src /tmp/src
 RUN rosdep update --rosdistro ${ROS_DISTRO} && apt-get update \ 
     && rosdep install --from-paths /tmp/src --ignore-src -r -y && rm -rf /tmp/src
 
+FROM depbuilder AS devcontainer
+# add user ros with sudo rights if it doesn't exist
+ARG GIT_REPO_VERSION="unknown"
+ARG GIT_REPO_VERSION_DATE="unknown"
+
+# export docker iamge build informaton to environment
+ENV GIT_REPO_VERSION=${GIT_REPO_VERSION}
+ENV GIT_REPO_VERSION_DATE=${GIT_REPO_VERSION_DATE}
+
+USER ros
+
 FROM depbuilder AS final
 # add user ros with sudo rights if it doesn't exist
 ARG GIT_REPO_VERSION="unknown"
@@ -34,7 +45,12 @@ ARG GIT_REPO_VERSION_DATE="unknown"
 ENV GIT_REPO_VERSION=${GIT_REPO_VERSION}
 ENV GIT_REPO_VERSION_DATE=${GIT_REPO_VERSION_DATE}
 
-# add sudo without password
-ENV DEBIAN_FRONTEND=noninteractive
-
 USER ros
+
+RUN mkdir -p ${HOME}/workspace/src
+COPY . ${HOME}/workspace/src/repository
+WORKDIR ${HOME}/workspace/
+RUN rosdep update --rosdistro ${ROS_DISTRO} && apt-get update \ 
+    && rosdep install --from-paths ./src --ignore-src -r -y \
+    && bash -c "source /opt/ros/${ROS_DISTRO}/setup.sh; colcon build"
+
