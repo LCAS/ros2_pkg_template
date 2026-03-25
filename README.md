@@ -1,4 +1,4 @@
-## ROS2 Package Template
+## ROS2 Workspace Template
 
 This repository serves as a template for creating ROS2 packages, equipped with a comprehensive CI workflow and devcontainer configuration.
 
