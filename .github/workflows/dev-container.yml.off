@@ -1,41 +1,33 @@
 name: 'devcontainer CI' 
 on:
   workflow_dispatch:
+
   pull_request:
-    branches:
-      - main
+    paths:
+      - '.devcontainer/**'
+      - '.github/workflows/dev-container.yml'
+
   push:
     branches:
       - main
+    paths:
+      - '.devcontainer/**'
+      - '.github/workflows/dev-container.yml'
 
 jobs:
   build_devcontainer:
     runs-on: ubuntu-latest
     steps:
-      - name: Free Disk Space (Ubuntu)
-        uses: jlumbroso/free-disk-space@54081f138730dfa15788a46383842cd2f914a1be
-        with:
-          # this might remove tools that are actually needed,
-          # if set to "true" but frees about 6 GB
-          tool-cache: false
-          
-          # all of these default to true, but feel free to set to
-          # "false" if necessary for your workflow
-          android: true
-          dotnet: true
-          haskell: true
-          large-packages: true
-          docker-images: true
-          swap-storage: true
       - name: Checkout from github
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
       - name: extract the github reference
         run: echo "BRANCH=${GITHUB_REF##*/}" >> $GITHUB_ENV
       - name: "image name from repo name"
         id: docker_image_name
         run: echo "docker_image=${{ github.repository }}" | tr '[:upper:]' '[:lower:]' |sed 's/[^0-9,a-z,A-Z,=,_,\/]/-/g' >>${GITHUB_OUTPUT}
       - name: setup buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v4
+
       - name: Build and run dev container task
         uses: devcontainers/ci@v0.3
         with:

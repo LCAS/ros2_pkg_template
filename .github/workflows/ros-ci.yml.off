@@ -5,17 +5,12 @@ on:
     # you may want to configure the branches that this should be run on here.
     branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
 
 jobs:
   test_docker: # On Linux, iterates on all ROS 1 and ROS 2 distributions.
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ros_distribution:
-          # - noetic
-          - humble
-          # - iron
 
         # Define the Docker image(s) associated with each ROS distribution.
         # The include syntax allows additional variables to be defined, like
@@ -34,12 +29,6 @@ jobs:
           # Humble Hawksbill (May 2022 - May 2027)
           - docker_image: ubuntu:jammy
             ros_distribution: humble
-            ros_version: 2
-
-          # Iron Irwini (May 2023 - November 2024)
-          # - docker_image: ubuntu:jammy
-          #   ros_distribution: iron
-          #   ros_version: 2
 
           # # Rolling Ridley (No End-Of-Life)
           # - docker_image: ubuntu:jammy
@@ -49,20 +38,12 @@ jobs:
     container:
       image: ${{ matrix.docker_image }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
+
       - name: setup ROS environment
-        uses: LCAS/setup-ros@master
-        with:
-          required-ros-distributions: ${{ matrix.ros_distribution }}
-      - name: build and test ROS 1
-        if: ${{ matrix.ros_version == 1 }}
-        uses: ros-tooling/action-ros-ci@v0.3
-        with:
-          import-token: ${{ github.token }}
-          target-ros1-distro: ${{ matrix.ros_distribution }}
-          skip-tests: true
+        uses: ros-tooling/setup-ros@v0.7
+
       - name: build and test ROS 2
-        if: ${{ matrix.ros_version == 2 }}
         uses: ros-tooling/action-ros-ci@v0.3
         with:
           import-token: ${{ github.token }}

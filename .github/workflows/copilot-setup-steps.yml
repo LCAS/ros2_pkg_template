@@ -1,0 +1,45 @@
+name: Copilot Setup Steps
+
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+
+  pull_request:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+
+jobs:
+  copilot-setup-steps:
+    # ensure this matches the target platform for your development environment, e.g. if you are using a devcontainer with Ubuntu 22.04, use ubuntu-22.04 here as well.
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+
+    env:
+      # set the ROS distribution to be used in the setup steps, e.g. humble or iron
+      ROS_DISTRO: humble
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: setup ROS environment
+        uses: ros-tooling/setup-ros@v0.7
+
+      - name: install workspace dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ros-humble-ros-base
+          source /opt/ros/humble/setup.bash
+          rosdep update --rosdistro humble
+          rosdep install --from-paths src --ignore-src -r -y
+
+      - name: build workspace
+        run: |
+          source /opt/ros/humble/setup.bash
+          colcon build --symlink-install --continue-on-error

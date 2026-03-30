@@ -1,11 +1,11 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
 {
-	"name": "L-CAS Humble CUDA-OpenGL Devcontainer",
+	"name": "ROS 2 Devcontainer",
 	"build": {
 		"dockerfile": "./Dockerfile",
 		"args": {
-			"BASE_IMAGE": "lcas.lincoln.ac.uk/lcas/ros-docker-images:jammy-cuda12.2-humble-2",
+			"BASE_IMAGE": "ros:humble",
 			"GIT_REPO_VERSION": "devcontainer",
 			"GIT_REPO_VERSION_DATE": "devcontainer"
 		},
@@ -13,18 +13,9 @@
 		"target": "devcontainer"
 	},
 
-	"forwardPorts": [5801],
-	"portsAttributes": {
-		"5801": {
-			"label": "desktop",
-			"onAutoForward": "openBrowser"
-		}
-	},
-
-	"postStartCommand": "/opt/entrypoint.sh /bin/true; .devcontainer/post-create.sh",
-
-	"remoteUser": "ros",
-	"updateRemoteUserUID": true, // ensure internal user has the same UID as the host user and update file permissions
+	"postStartCommand": ".devcontainer/post-create.sh",
+    "updateRemoteUserUID": true,
+	"remoteUser": "root",
 	"customizations": {
 		"vscode": {
 			"extensions": [
@@ -39,8 +30,7 @@
 		}
 	},
 	"hostRequirements": {
-		"gpu": "optional",
-		"cpus": 2,
-		"memory": "8gb"
+		"cpus": 1,
+		"memory": "2gb"
 	}
 }
