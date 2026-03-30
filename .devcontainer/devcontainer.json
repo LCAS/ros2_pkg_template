@@ -1,21 +1,19 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
 {
 	"name": "ROS 2 Devcontainer",
-	"build": {
-		"dockerfile": "./Dockerfile",
-		"args": {
-			"BASE_IMAGE": "ros:humble",
-			"GIT_REPO_VERSION": "devcontainer",
-			"GIT_REPO_VERSION_DATE": "devcontainer"
-		},
-		"context": "..",
-		"target": "devcontainer"
+	"dockerComposeFile": "compose.yaml",
+	"service": "develop",
+	"workspaceFolder": "/workspace",
+	"remoteUser": "root",
+
+	"forwardPorts": [
+		"vnc:5801"
+	],
+	"portsAttributes": {
+		"vnc:5801": {
+			"label": "novnc"
+		}
 	},
 
-	"postStartCommand": ".devcontainer/post-create.sh",
-    "updateRemoteUserUID": true,
-	"remoteUser": "root",
 	"customizations": {
 		"vscode": {
 			"extensions": [

@@ -1,0 +1,47 @@
+services:
+  vnc:
+    image: lcas.lincoln.ac.uk/vnc:staging
+    volumes:
+      - x11:/tmp/.X11-unix
+    devices:
+      - /dev/dri:/dev/dri
+    networks:
+      - ros_net
+    environment:
+      - VNC_WALLPAPER=gir
+    stdin_open: true
+    tty: true
+    ipc: shareable
+
+  develop:
+    build:
+      context: ../
+      dockerfile: .devcontainer/Dockerfile
+      target: devcontainer
+    volumes:
+      - ../:/workspace
+      - x11:/tmp/.X11-unix
+      - colcon_build:/workspace/build
+      - colcon_install:/workspace/install
+      - colcon_log:/workspace/log
+    stdin_open: true
+    tty: true
+    networks:
+      - ros_net
+    depends_on: 
+      - vnc
+    environment:
+      - DISPLAY=:1.0
+      - ROS_DOMAIN_ID=10
+    ipc: "service:vnc" 
+    devices:
+        - /dev/dri:/dev/dri
+
+volumes:
+  x11:
+  colcon_build:
+  colcon_install:
+  colcon_log:
+
+networks:
+  ros_net:

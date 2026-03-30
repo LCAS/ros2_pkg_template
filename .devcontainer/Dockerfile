@@ -1,49 +1,29 @@
-ARG BASE_IMAGE=ros:humble
+ARG BASE_IMAGE=lcas.lincoln.ac.uk/ros:humble-staging
+ARG ROS_DISTRO=humble
 
-FROM ${BASE_IMAGE} AS base
+FROM ${BASE_IMAGE} AS devcontainer
 
-ENV DEBIAN_FRONTEND=noninteractive
+RUN rm -rf /var/lib/apt/lists/* \
+    && apt-get update --fix-missing \
+    && apt-get -y install --no-install-recommends --fix-missing \
+    ros-${ROS_DISTRO}-desktop \
+    bash-completion \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get update \
-    && apt-get install -qq -y --no-install-recommends \
-    git \
-    python3-pip \
-    python3-rosdep \
-    && rosdep init || true
+COPY ./ /workspace/
+WORKDIR /workspace
 
-# get the source tree and analyse it for its package.xml only
-FROM base AS sourcefilter
-COPY ./src /tmp/src
-# remove everything that isn't package.xml
-RUN find /tmp/src -type f \! -name "package.xml" -print | xargs rm -rf
+ENV ROS2_WS=/workspace
+RUN rosdep update --rosdistro ${ROS_DISTRO} &&\
+    sudo apt-get update && \
+    rosdep install --from-paths ./src --ignore-src -r -y
 
-# install all dependencies listed in the package.xml
-FROM base AS depbuilder
-# copy the reduced source tree (only package.xml) from previous stage
-COPY --from=sourcefilter /tmp/src /tmp/src
-RUN rosdep update --rosdistro ${ROS_DISTRO} && apt-get update \
-    && rosdep install --from-paths /tmp/src --ignore-src -r -y && rm -rf /tmp/src
+# Do an initial build to speed up development
+RUN /bin/bash -lc "source /opt/ros/${ROS_DISTRO}/setup.bash && colcon build --continue-on-error"
 
-FROM depbuilder AS devcontainer
-ARG GIT_REPO_VERSION="unknown"
-ARG GIT_REPO_VERSION_DATE="unknown"
+# ----------------------------------------------------------------------------------------------------
+FROM devcontainer AS final
 
-# export docker image build information to environment
-ENV GIT_REPO_VERSION=${GIT_REPO_VERSION}
-ENV GIT_REPO_VERSION_DATE=${GIT_REPO_VERSION_DATE}
+RUN /bin/bash -lc "source /opt/ros/${ROS_DISTRO}/setup.bash && colcon build"
 
-FROM depbuilder AS final
-ARG GIT_REPO_VERSION="unknown"
-ARG GIT_REPO_VERSION_DATE="unknown"
-
-# export docker image build information to environment
-ENV GIT_REPO_VERSION=${GIT_REPO_VERSION}
-ENV GIT_REPO_VERSION_DATE=${GIT_REPO_VERSION_DATE}
-
-RUN mkdir -p /root/workspace/src
-COPY . /root/workspace/src/repository
-WORKDIR /root/workspace/
-RUN rosdep update --rosdistro ${ROS_DISTRO} && apt-get update \
-    && rosdep install --from-paths ./src --ignore-src -r -y \
-    && bash -c "source /opt/ros/${ROS_DISTRO}/setup.sh; colcon build"
-
+CMD ["/bin/bash", "-lc", "source /workspace/install/setup.bash && exec ros2 launch example example.launch.py]
