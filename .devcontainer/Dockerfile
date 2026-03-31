@@ -15,7 +15,7 @@ WORKDIR /workspace
 
 ENV ROS2_WS=/workspace
 RUN rosdep update --rosdistro ${ROS_DISTRO} &&\
-    sudo apt-get update && \
+    apt-get update && \
     rosdep install --from-paths ./src --ignore-src -r -y
 
 # Do an initial build to speed up development

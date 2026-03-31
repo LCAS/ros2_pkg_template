@@ -1,4 +1,4 @@
-# GPU override — merge on top of compose.yml when any GPU is available.
+# GPU override — merge on top of compose.yaml when any GPU is available.
 #
 # Usage: docker compose -f compose.yaml -f compose.gpu.yaml up
 
