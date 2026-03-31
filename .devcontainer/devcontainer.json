@@ -1,8 +1,7 @@
 {
-	"name": "ROS 2 Devcontainer",
+	"name": "ROS 2 Devcontainer (CPU-only)",
 	"dockerComposeFile": [
-		"compose.yaml",
-		"compose.gpu.yaml"
+		"compose.yaml"
 	],
 	"service": "develop",
 	"workspaceFolder": "/workspace",

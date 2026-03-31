@@ -1,9 +1,8 @@
 {
-	"name": "ROS 2 Devcontainer (NVIDIA GPU)",
+	"name": "ROS 2 Devcontainer (Generic GPU)",
 	"dockerComposeFile": [
 		"../compose.yaml",
-		"../compose.gpu.yaml",
-		"../compose.nvidia.yaml"
+		"../compose.gpu.yaml"
 	],
 	"service": "develop",
 	"workspaceFolder": "/workspace",
@@ -17,4 +16,3 @@
 		}
 	}
 }
-

@@ -26,4 +26,4 @@ FROM devcontainer AS final
 
 RUN /bin/bash -lc "source /opt/ros/${ROS_DISTRO}/setup.bash && colcon build"
 
-CMD ["/bin/bash", "-lc", "source /workspace/install/setup.bash && exec ros2 launch example example.launch.py]
+CMD ["/bin/bash", "-lc", "source /workspace/install/setup.bash && exec ros2 launch example example.launch.py"]

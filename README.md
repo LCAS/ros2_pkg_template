@@ -12,9 +12,9 @@ This repository is a template for creating ROS2 packages with a CI workflow and 
 
 | Version | When |
 | ------- | ---- |
-| Default | You have access to `/dev/dri` but either don't have a NVIDIA GPU, or don't want to use it i.e. on a Laptop |
-| NVIDIA GPU | When you have a NVIDIA GPU that is not being detected by the default option. You will need to have [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#setting-up-nvidia-container-toolkit) installed. | 
-| No GPU, Fallback | When the other two options fail, for example you're using a Windows, Mac or Virtual Machine that cannot provide the GPU across to the container |
+| Default (CPU-safe) | Recommended first choice. Uses no GPU passthrough and works across laptops, VMs, macOS, and Windows hosts. |
+| Generic GPU (`/dev/dri`) | Use when your host exposes `/dev/dri` and you want hardware acceleration without NVIDIA runtime requirements. |
+| NVIDIA GPU | Use when you have an NVIDIA GPU and [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#setting-up-nvidia-container-toolkit) installed. This profile layers generic GPU and NVIDIA-specific overrides. |
 
 ### Development
 
@@ -22,6 +22,6 @@ This repository is a template for creating ROS2 packages with a CI workflow and 
 - The devcontainer runs as `root` using `lcas.lincoln.ac.uk/ros:humble` as the base image
 - Dependencies listed in `package.xml` files are installed automatically via `rosdep`
 
-### References
+### Useful Resources
 
-- [Get Started with Dev Containers in VS Code](https://youtu.be/b1RavPr_878?si=ADepc_VocOHTXP55)
+- [Get Started with Dev Containers in VS Code](https://youtu.be/b1RavPr_878)
