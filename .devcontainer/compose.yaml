@@ -3,8 +3,6 @@ services:
     image: lcas.lincoln.ac.uk/vnc:staging
     volumes:
       - x11:/tmp/.X11-unix
-    devices:
-      - /dev/dri:/dev/dri
     networks:
       - ros_net
     environment:
@@ -34,8 +32,6 @@ services:
       - DISPLAY=:1.0
       - ROS_DOMAIN_ID=10
     ipc: "service:vnc" 
-    devices:
-        - /dev/dri:/dev/dri
 
 volumes:
   x11:
