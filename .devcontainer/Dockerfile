@@ -3,25 +3,22 @@ ARG ROS_DISTRO=humble
 
 FROM ${BASE_IMAGE} AS devcontainer
 
-ENV main_user=${USER}
+ENV main_user=${USER:-root}
 
 USER root
 RUN rm -rf /var/lib/apt/lists/* \
     && apt-get update --fix-missing \
     && apt-get -y install --no-install-recommends --fix-missing \
-    ros-${ROS_DISTRO}-desktop \
-    bash-completion \
+        bash-completion \
     && rm -rf /var/lib/apt/lists/*
-
-USER ${main_user}
 
 WORKDIR /workspace
 ENV ROS2_WS=/workspace
-RUN --mount=type=bind,source=.,target=/workspace \
-    rosdep update --rosdistro ${ROS_DISTRO} &&\
-    apt-get update && \
-    rosdep install --from-paths /workspace/src --ignore-src -r -y
+RUN --mount=type=bind,source=.,target=/workspace rosdep update --rosdistro ${ROS_DISTRO} \
+    && apt-get update \
+    && rosdep install --from-paths /workspace/src --ignore-src -r -y
 
+USER ${main_user}
 
 # Do an initial build to speed up development
 RUN /bin/bash -lc "source /opt/ros/${ROS_DISTRO}/setup.bash && colcon build --continue-on-error"
