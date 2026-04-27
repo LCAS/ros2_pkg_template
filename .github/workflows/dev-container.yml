@@ -34,5 +34,3 @@ jobs:
           imageName: devcontainer/${{ steps.docker_image_name.outputs.docker_image }}
           configFile: ./.devcontainer/devcontainer.json
           push: never
-          cacheFrom: type=gha
-          cacheTo: type=gha,mode=max
