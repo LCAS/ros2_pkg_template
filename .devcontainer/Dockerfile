@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=lcas.lincoln.ac.uk/ros:humble-latest
+ARG BASE_IMAGE=lcas.lincoln.ac.uk/ros:humble-main
 ARG ROS_DISTRO=humble
 
 FROM ${BASE_IMAGE} AS devcontainer
