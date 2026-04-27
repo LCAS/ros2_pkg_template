@@ -1,14 +1,19 @@
-ARG BASE_IMAGE=lcas.lincoln.ac.uk/ros:humble-main
+ARG BASE_IMAGE=lcas.lincoln.ac.uk/ros:humble-latest
 ARG ROS_DISTRO=humble
 
 FROM ${BASE_IMAGE} AS devcontainer
 
+ENV main_user=${USER}
+
+USER root
 RUN rm -rf /var/lib/apt/lists/* \
     && apt-get update --fix-missing \
     && apt-get -y install --no-install-recommends --fix-missing \
     ros-${ROS_DISTRO}-desktop \
     bash-completion \
     && rm -rf /var/lib/apt/lists/*
+
+USER ${main_user}
 
 COPY ./ /workspace/
 WORKDIR /workspace
