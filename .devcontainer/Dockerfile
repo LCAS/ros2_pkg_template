@@ -15,13 +15,13 @@ RUN rm -rf /var/lib/apt/lists/* \
 
 USER ${main_user}
 
-COPY ./ /workspace/
-WORKDIR /workspace
-
-ENV ROS2_WS=/workspace
-RUN rosdep update --rosdistro ${ROS_DISTRO} &&\
+RUN --mount=type=bind,source=.,target=/workspace \
+    rosdep update --rosdistro ${ROS_DISTRO} &&\
     apt-get update && \
     rosdep install --from-paths ./src --ignore-src -r -y
+
+WORKDIR /workspace
+ENV ROS2_WS=/workspace
 
 # Do an initial build to speed up development
 RUN /bin/bash -lc "source /opt/ros/${ROS_DISTRO}/setup.bash && colcon build --continue-on-error"
